@@ -10,6 +10,7 @@ import {
   Alert,
   Link,
   Divider,
+  CircularProgress,
 } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 import config from '../config';
@@ -18,16 +19,46 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  // Validate email
+  const validateEmail = (value) => {
+    if (value.length > 0) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(value)) {
+        return 'Please enter a valid email address';
+      }
+    }
+    return '';
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(''); // Clear any previous errors
+
+    // Validate email
+    const emailError = validateEmail(email);
+    if (emailError) {
+      setError(emailError);
+      return;
+    }
+
+    // Validate password
+    if (password.length === 0) {
+      setError('Please enter your password');
+      return;
+    }
+
+    setIsLoading(true);
     try {
       await login(email, password);
       navigate(config.ROUTES.TASKS);
     } catch (err) {
-      setError(err.message || 'Failed to login');
+      setError(err.response?.data?.message || 'Failed to login. Please check your credentials.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,6 +94,9 @@ const Login = () => {
               margin="normal"
               required
               placeholder="Enter your email address"
+              error={!!validateEmail(email)}
+              helperText={validateEmail(email)}
+              disabled={isLoading}
             />
             <TextField
               fullWidth
@@ -73,6 +107,7 @@ const Login = () => {
               margin="normal"
               required
               placeholder="Enter your password"
+              disabled={isLoading}
             />
             <Button
               type="submit"
@@ -81,8 +116,9 @@ const Login = () => {
               color="primary"
               size="large"
               sx={{ mt: 3, mb: 2 }}
+              disabled={isLoading}
             >
-              Sign In
+              {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
             </Button>
             
             <Divider sx={{ my: 2 }}>OR</Divider>

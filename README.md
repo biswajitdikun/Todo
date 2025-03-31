@@ -314,31 +314,66 @@ The application provides user-friendly error messages for:
 - Base URL: http://localhost:5001/api
 - Collection available in the repository
 
+## Testing
+
+### Backend Testing
+```bash
+cd backend
+npm test
+```
+
+### Frontend Testing
+```bash
+cd frontend
+npm test
+```
+
+## Deployment
+
+### Backend Deployment
+1. Set up a MongoDB Atlas account and create a cluster
+2. Update the `MONGODB_URI` in your production environment
+3. Set a secure `JWT_SECRET` in your production environment
+4. Deploy to your preferred hosting service (e.g., Heroku, DigitalOcean, AWS)
+
+### Frontend Deployment
+1. Build the frontend application:
+   ```bash
+   cd frontend
+   npm run build
+   ```
+2. Deploy the `build` folder to your preferred hosting service (e.g., Vercel, Netlify, AWS S3)
+3. Update the `API_URL` in `src/config.js` to point to your deployed backend
+
 ## Troubleshooting
 
 ### Common Issues
 
-1. MongoDB Connection:
-```bash
-# Check MongoDB status
-brew services list
+1. MongoDB Connection Issues
+   - Ensure MongoDB is running locally
+   - Check if the MongoDB URI is correct in your `.env` file
+   - Verify network connectivity to MongoDB Atlas if using cloud database
 
-# Restart MongoDB
-brew services restart mongodb-community
-```
+2. JWT Authentication Issues
+   - Verify the JWT_SECRET is set correctly
+   - Check if the token is being sent in the Authorization header
+   - Ensure the token hasn't expired
 
-2. Port Already in Use:
-```bash
-# Find process using port
-lsof -i :5001
+3. CORS Issues
+   - Verify the backend CORS configuration matches your frontend URL
+   - Check if the API URL in frontend config matches the backend URL
 
-# Kill process
-kill -9 <PID>
-```
+4. Build Issues
+   - Clear node_modules and package-lock.json
+   - Run `npm install` again
+   - Check for version conflicts in package.json
 
-3. Token Expired:
-- Login again to get a new token
-- Default expiration is 5 minutes
+### Getting Help
+If you encounter any issues:
+1. Check the error logs in your terminal
+2. Review the API response messages
+3. Check the browser console for frontend errors
+4. Ensure all environment variables are set correctly
 
 ## Contributing
 
