@@ -186,7 +186,3 @@ npm run build
    - Port already in use: Change port in .env file
    - MongoDB not running: Start with `brew services start mongodb/brew/mongodb-community`
    - Node modules missing: Run `npm install` in both frontend and backend directories
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details. 
