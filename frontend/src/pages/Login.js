@@ -9,6 +9,7 @@ import {
   Box,
   Alert,
   Link,
+  Divider,
 } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 
@@ -33,14 +34,24 @@ const Login = () => {
     <Container maxWidth="sm">
       <Box sx={{ mt: 8 }}>
         <Paper elevation={3} sx={{ p: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom align="center">
-            Login
-          </Typography>
+          <Box sx={{ textAlign: 'center', mb: 4 }}>
+            <Typography variant="h3" component="h1" gutterBottom color="primary">
+              Todo App
+            </Typography>
+            <Typography variant="h5" component="h2" gutterBottom color="text.secondary">
+              Welcome Back!
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Please sign in to manage your tasks
+            </Typography>
+          </Box>
+          
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {error}
             </Alert>
           )}
+          
           <form onSubmit={handleSubmit}>
             <TextField
               fullWidth
@@ -50,6 +61,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               margin="normal"
               required
+              placeholder="Enter your email address"
             />
             <TextField
               fullWidth
@@ -59,21 +71,26 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               margin="normal"
               required
+              placeholder="Enter your password"
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
-              sx={{ mt: 3 }}
+              size="large"
+              sx={{ mt: 3, mb: 2 }}
             >
-              LOGIN
+              Sign In
             </Button>
+            
+            <Divider sx={{ my: 2 }}>OR</Divider>
+            
             <Box sx={{ mt: 2, textAlign: 'center' }}>
-              <Typography variant="body2">
+              <Typography variant="body2" color="text.secondary">
                 Don't have an account?{' '}
-                <Link component={RouterLink} to="/register" color="primary">
-                  Register here
+                <Link component={RouterLink} to="/register" color="primary" sx={{ fontWeight: 'bold' }}>
+                  Create one now
                 </Link>
               </Typography>
             </Box>
