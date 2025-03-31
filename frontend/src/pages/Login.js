@@ -12,6 +12,7 @@ import {
   Divider,
 } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
+import config from '../config';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -24,7 +25,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await login(email, password);
-      navigate('/tasks');
+      navigate(config.ROUTES.TASKS);
     } catch (err) {
       setError(err.message || 'Failed to login');
     }
@@ -36,13 +37,13 @@ const Login = () => {
         <Paper elevation={3} sx={{ p: 4 }}>
           <Box sx={{ textAlign: 'center', mb: 4 }}>
             <Typography variant="h3" component="h1" gutterBottom color="primary">
-              Todo App
+              {config.APP_NAME}
             </Typography>
             <Typography variant="h5" component="h2" gutterBottom color="text.secondary">
               Welcome Back!
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              Please sign in to manage your tasks
+              {config.APP_DESCRIPTION}
             </Typography>
           </Box>
           
@@ -89,7 +90,7 @@ const Login = () => {
             <Box sx={{ mt: 2, textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary">
                 Don't have an account?{' '}
-                <Link component={RouterLink} to="/register" color="primary" sx={{ fontWeight: 'bold' }}>
+                <Link component={RouterLink} to={config.ROUTES.REGISTER} color="primary" sx={{ fontWeight: 'bold' }}>
                   Create one now
                 </Link>
               </Typography>

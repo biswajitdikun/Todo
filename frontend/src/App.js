@@ -6,14 +6,15 @@ import PrivateRoute from './components/PrivateRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Tasks from './pages/Tasks';
+import config from './config';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
+      main: config.THEME.PRIMARY_COLOR,
     },
     secondary: {
-      main: '#dc004e',
+      main: config.THEME.SECONDARY_COLOR,
     },
   },
 });
@@ -24,17 +25,17 @@ function App() {
       <AuthProvider>
         <Router>
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path={config.ROUTES.LOGIN} element={<Login />} />
+            <Route path={config.ROUTES.REGISTER} element={<Register />} />
             <Route
-              path="/tasks"
+              path={config.ROUTES.TASKS}
               element={
                 <PrivateRoute>
                   <Tasks />
                 </PrivateRoute>
               }
             />
-            <Route path="/" element={<Navigate to="/tasks" replace />} />
+            <Route path={config.ROUTES.HOME} element={<Navigate to={config.ROUTES.TASKS} replace />} />
           </Routes>
         </Router>
       </AuthProvider>

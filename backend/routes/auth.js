@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const config = require('../config');
 
 // Register new user
 router.post('/register', async (req, res) => {
@@ -21,8 +22,8 @@ router.post('/register', async (req, res) => {
     // Generate token
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '5m' }
+      config.JWT_SECRET,
+      { expiresIn: config.JWT_EXPIRY }
     );
 
     res.status(201).json({ user, token });
@@ -51,8 +52,8 @@ router.post('/login', async (req, res) => {
     // Generate token
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '5m' }
+      config.JWT_SECRET,
+      { expiresIn: config.JWT_EXPIRY }
     );
 
     res.json({ user, token });

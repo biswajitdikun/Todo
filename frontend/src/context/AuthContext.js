@@ -1,15 +1,15 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import config from '../config';
 
 const AuthContext = createContext(null);
-const API_URL = 'http://localhost:5001/api';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem(config.TOKEN_KEY);
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
@@ -18,12 +18,12 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, {
+      const response = await axios.post(`${config.API_URL}/auth/login`, {
         email,
         password,
       });
       const { token, user } = response.data;
-      localStorage.setItem('token', token);
+      localStorage.setItem(config.TOKEN_KEY, token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setUser(user);
       return user;
@@ -34,13 +34,13 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/register`, {
+      const response = await axios.post(`${config.API_URL}/auth/register`, {
         username,
         email,
         password,
       });
       const { token, user } = response.data;
-      localStorage.setItem('token', token);
+      localStorage.setItem(config.TOKEN_KEY, token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setUser(user);
       return user;
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem(config.TOKEN_KEY);
     delete axios.defaults.headers.common['Authorization'];
     setUser(null);
   };
