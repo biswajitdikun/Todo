@@ -25,9 +25,9 @@ A full-stack Todo List application built with the MERN stack (MongoDB, Express.j
 ## Tech Stack
 
 ### Frontend
-- React 19.1.0
-- Material-UI 7.0.1
-- React Router DOM 7.4.1
+- React 18.2.0
+- Material-UI 5.15.11
+- React Router DOM 6.22.1
 - Axios for API requests
 - Context API for state management
 
@@ -37,6 +37,32 @@ A full-stack Todo List application built with the MERN stack (MongoDB, Express.j
 - MongoDB with Mongoose
 - JWT for authentication
 - bcryptjs for password hashing
+- Jest and Supertest for testing
+
+## Project Structure
+
+```
+todo-app/
+├── frontend/
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── context/       # React context providers
+│   │   ├── pages/         # Page components
+│   │   ├── services/      # API service functions
+│   │   ├── utils/         # Utility functions
+│   │   ├── config.js      # Frontend configuration
+│   │   └── App.js         # Main application component
+│   └── package.json
+├── backend/
+│   ├── models/           # MongoDB models
+│   ├── routes/           # API routes
+│   ├── middleware/       # Custom middleware
+│   ├── config/          # Configuration files
+│   ├── tests/           # Test files
+│   ├── server.js        # Main server file
+│   └── package.json
+└── README.md
+```
 
 ## Prerequisites
 
@@ -317,10 +343,16 @@ The application provides user-friendly error messages for:
 ## Testing
 
 ### Backend Testing
+The backend uses Jest and Supertest for testing:
+
 ```bash
 cd backend
 npm test
 ```
+
+Test files are located in the `tests/` directory:
+- `auth.test.js`: Authentication tests
+- `tasks.test.js`: Task management tests
 
 ### Frontend Testing
 ```bash
@@ -383,5 +415,3 @@ If you encounter any issues:
 4. Push to the branch
 5. Create a Pull Request
 
-
-This project is licensed under the MIT License.

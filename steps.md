@@ -30,12 +30,12 @@ npm init -y
 2. Install backend dependencies:
 ```bash
 npm install express mongoose bcryptjs jsonwebtoken cors dotenv
-npm install --save-dev nodemon
+npm install --save-dev nodemon jest supertest
 ```
 
 3. Create backend directory structure:
 ```bash
-mkdir -p models routes middleware config
+mkdir -p models routes middleware config tests
 ```
 
 4. Create backend files:
@@ -54,8 +54,15 @@ touch routes/tasks.js
 # Create middleware file
 touch middleware/auth.js
 
+# Create config file
+touch config.js
+
 # Create environment file
 touch .env
+
+# Create test files
+touch tests/auth.test.js
+touch tests/tasks.test.js
 ```
 
 5. Configure environment variables (.env):
@@ -80,7 +87,7 @@ npm install @mui/material @emotion/react @emotion/styled @mui/icons-material axi
 
 3. Create frontend directory structure:
 ```bash
-mkdir -p src/components src/context src/services src/pages
+mkdir -p src/components src/context src/services src/pages src/utils
 ```
 
 4. Create frontend files:
@@ -98,6 +105,9 @@ touch src/components/PrivateRoute.js
 touch src/pages/Login.js
 touch src/pages/Register.js
 touch src/pages/Tasks.js
+
+# Create config file
+touch src/config.js
 ```
 
 ## Root Directory Setup
@@ -107,7 +117,40 @@ touch src/pages/Tasks.js
 cd ..
 touch README.md
 touch .gitignore
-touch dependencies.md
+```
+
+2. Configure .gitignore:
+```
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build files
+/build
+/dist
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
 ```
 
 ## Running the Application
@@ -129,48 +172,31 @@ cd frontend
 npm start
 ```
 
-## Testing the Backend API
+## Testing
 
-1. Test User Registration:
+1. Run backend tests:
 ```bash
+cd backend
+npm test
+```
+
+2. Test API endpoints using curl or Postman:
+```bash
+# Register a new user
 curl -X POST http://localhost:5001/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{"username": "testuser", "email": "test@example.com", "password": "password123"}'
-```
 
-2. Test User Login:
-```bash
+# Login
 curl -X POST http://localhost:5001/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email": "test@example.com", "password": "password123"}'
-```
 
-3. Test Creating a Task (replace <token> with the JWT token received from login):
-```bash
+# Create a task (replace <token> with JWT token)
 curl -X POST http://localhost:5001/api/tasks \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
   -d '{"title": "Test Task", "description": "This is a test task"}'
-```
-
-4. Test Getting All Tasks:
-```bash
-curl -X GET http://localhost:5001/api/tasks \
-  -H "Authorization: Bearer <token>"
-```
-
-5. Test Updating a Task (replace <task-id> with an actual task ID):
-```bash
-curl -X PUT http://localhost:5001/api/tasks/<task-id> \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{"title": "Updated Task", "completed": true}'
-```
-
-6. Test Deleting a Task:
-```bash
-curl -X DELETE http://localhost:5001/api/tasks/<task-id> \
-  -H "Authorization: Bearer <token>"
 ```
 
 ## Verifying the Setup
