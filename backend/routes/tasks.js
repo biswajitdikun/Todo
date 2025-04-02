@@ -23,7 +23,10 @@ router.post('/', auth, async (req, res) => {
     await task.save();
     res.status(201).json(task);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: error.message });
+    }
+    res.status(500).json({ message: error.message });
   }
 });
 
@@ -31,7 +34,6 @@ router.post('/', auth, async (req, res) => {
 router.put('/:id', auth, async (req, res) => {
   try {
     const task = await Task.findOne({ _id: req.params.id, user: req.user._id });
-    
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
     }
@@ -40,7 +42,10 @@ router.put('/:id', auth, async (req, res) => {
     await task.save();
     res.json(task);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: error.message });
+    }
+    res.status(500).json({ message: error.message });
   }
 });
 
@@ -48,11 +53,9 @@ router.put('/:id', auth, async (req, res) => {
 router.delete('/:id', auth, async (req, res) => {
   try {
     const task = await Task.findOneAndDelete({ _id: req.params.id, user: req.user._id });
-    
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
     }
-
     res.json({ message: 'Task deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });

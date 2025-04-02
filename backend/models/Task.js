@@ -6,18 +6,12 @@ const taskSchema = new mongoose.Schema({
     required: [true, 'Title is required'],
     trim: true,
     minlength: [3, 'Title must be at least 3 characters long'],
-    maxlength: [100, 'Title must not exceed 100 characters'],
-    validate: {
-      validator: function(v) {
-        return v.trim().length > 0;
-      },
-      message: 'Title cannot be empty'
-    }
+    maxlength: [100, 'Title cannot exceed 100 characters']
   },
   description: {
     type: String,
     trim: true,
-    maxlength: [500, 'Description must not exceed 500 characters'],
+    maxlength: [500, 'Description cannot exceed 500 characters'],
     default: ''
   },
   completed: {
@@ -27,13 +21,13 @@ const taskSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: [true, 'User ID is required']
+    required: [true, 'User reference is required']
   }
 }, {
   timestamps: true
 });
 
-// Add index for better query performance
+// Create index for better query performance
 taskSchema.index({ user: 1, createdAt: -1 });
 
 const Task = mongoose.model('Task', taskSchema);

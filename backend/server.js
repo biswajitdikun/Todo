@@ -27,7 +27,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!' });
 });
 
-// Start server
-app.listen(config.PORT, () => {
-  console.log(`Server is running on port ${config.PORT}`);
-}); 
+// Only start the server if this file is run directly
+if (require.main === module) {
+  app.listen(config.PORT, () => {
+    console.log(`Server is running on port ${config.PORT}`);
+  });
+}
+
+module.exports = app; 
