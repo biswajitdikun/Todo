@@ -68,8 +68,9 @@ touch tests/tasks.test.js
 5. Configure environment variables (.env):
 ```
 PORT=5001
-MONGODB_URI=mongodb://localhost:27017/todo-app
-JWT_SECRET=your-super-secret-key-change-this-in-production
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+FRONTEND_URL=http://localhost:3000
 ```
 
 ## Frontend Setup
@@ -98,7 +99,7 @@ touch src/context/AuthContext.js
 # Create service file
 touch src/services/taskService.js
 
-# Create component file
+# Create component files
 touch src/components/PrivateRoute.js
 
 # Create page files
@@ -110,93 +111,70 @@ touch src/pages/Tasks.js
 touch src/config.js
 ```
 
-## Root Directory Setup
+## Deployment
 
-1. Create root level files:
-```bash
-cd ..
-touch README.md
-touch .gitignore
-```
+### 1. Database Setup (MongoDB Atlas)
+1. Create MongoDB Atlas account
+2. Create new cluster
+3. Set up database access
+4. Get connection string
+5. Add IP access (0.0.0.0/0 for all access)
 
-2. Configure .gitignore:
-```
-# Dependencies
-node_modules/
-/.pnp
-.pnp.js
+### 2. Backend Deployment (Render.com)
+1. Create Render account
+2. Create new Web Service
+3. Connect GitHub repository
+4. Configure service:
+   ```
+   Name: todo-app-backend
+   Root Directory: backend
+   Environment: Node
+   Build Command: npm install
+   Start Command: node server.js
+   ```
+5. Add environment variables:
+   ```
+   PORT=10000
+   MONGODB_URI=mongodb+srv://bisusatapathy2000:Ib8DgIkGX1EtUnl2@cluster0.rgsqw9r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+   JWT_SECRET=your_jwt_secret
+   FRONTEND_URL=https://todo-sage-tau.vercel.app
+   NODE_ENV=production
+   ```
 
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+### 3. Frontend Deployment (Vercel)
+1. Create Vercel account
+2. Import GitHub repository
+3. Configure project:
+   ```
+   Framework Preset: Create React App
+   Build Command: npm run build
+   Output Directory: build
+   Install Command: npm install
+   ```
+4. Add environment variables:
+   ```
+   REACT_APP_API_URL=https://todo-m8gg.onrender.com/api
+   ```
 
-# Build files
-/build
-/dist
+## Live Application
+🚀 **[Access the Todo App Here](https://todo-sage-tau.vercel.app)**
 
-# Debug logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# IDE files
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# OS files
-.DS_Store
-Thumbs.db
-```
-
-## Running the Application
-
-1. Start MongoDB (if not already running):
-```bash
-brew services start mongodb/brew/mongodb-community
-```
-
-2. Start the backend server:
-```bash
-cd backend
-npm run dev
-```
-
-3. In a new terminal, start the frontend development server:
-```bash
-cd frontend
-npm start
-```
+### Development URLs
+- Frontend (Vercel): https://todo-sage-tau.vercel.app
+- Backend API (Render): https://todo-m8gg.onrender.com
 
 ## Testing
 
-1. Run backend tests:
+### Backend Testing
 ```bash
 cd backend
 npm test
 ```
 
-2. Test API endpoints using curl or Postman:
+### Frontend Testing
 ```bash
-# Register a new user
-curl -X POST http://localhost:5001/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"username": "testuser", "email": "test@example.com", "password": "password123"}'
-
-# Login
-curl -X POST http://localhost:5001/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email": "test@example.com", "password": "password123"}'
-
-# Create a task (replace <token> with JWT token)
-curl -X POST http://localhost:5001/api/tasks \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{"title": "Test Task", "description": "This is a test task"}'
+cd frontend
+npm test
 ```
 
 ## Verifying the Setup
@@ -213,7 +191,6 @@ curl http://localhost:5001/api/tasks
 
 2. Frontend Verification:
 - Open http://localhost:3000 in your browser
-- Should see the login page
 - Try registering a new user
 - Try logging in
 - Try creating, editing, and deleting tasks

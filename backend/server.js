@@ -1,37 +1,55 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const config = require('./config');
+const dotenv = require('dotenv');
+const authRoutes = require('./routes/auth');
+const taskRoutes = require('./routes/tasks');
 
-// Create Express app
+// Load environment variables
+dotenv.config();
+
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: config.CORS_ORIGIN
-}));
 app.use(express.json());
 
-// MongoDB connection
-mongoose.connect(config.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+// CORS configuration
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:3000',
+  'https://todo-sage-tau.vercel.app'
+].filter(Boolean); // Remove any undefined values
+
+app.use(cors({
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true
+}));
 
 // Routes
-app.use(`${config.API_PREFIX}/auth`, require('./routes/auth'));
-app.use(`${config.API_PREFIX}/tasks`, require('./routes/tasks'));
+app.use('/api/auth', authRoutes);
+app.use('/api/tasks', taskRoutes);
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Something went wrong!' });
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
 });
 
-// Only start the server if this file is run directly
-if (require.main === module) {
-  app.listen(config.PORT, () => {
-    console.log(`Server is running on port ${config.PORT}`);
-  });
-}
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-module.exports = app; 
+// Start server
+const PORT = process.env.PORT || 5001;
+app.listen(PORT, () => {
+  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+}); 

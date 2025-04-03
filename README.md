@@ -2,6 +2,13 @@
 
 A full-stack Todo List application built with the MERN stack (MongoDB, Express.js, React, Node.js) featuring user authentication, task management, and a modern Material-UI interface.
 
+## Live Application
+🚀 **[Access the Todo App Here](https://todo-sage-tau.vercel.app)**
+
+### Development URLs
+- Frontend: https://todo-sage-tau.vercel.app
+- Backend API: https://todo-m8gg.onrender.com
+
 ## Features
 
 - 🔐 User Authentication (JWT)
@@ -362,20 +369,26 @@ npm test
 
 ## Deployment
 
-### Backend Deployment
-1. Set up a MongoDB Atlas account and create a cluster
-2. Update the `MONGODB_URI` in your production environment
-3. Set a secure `JWT_SECRET` in your production environment
-4. Deploy to your preferred hosting service (e.g., Heroku, DigitalOcean, AWS)
+### Current Deployment
+The application is currently deployed and running at:
+- Frontend: Vercel ([https://todo-sage-tau.vercel.app](https://todo-sage-tau.vercel.app))
+- Backend: Render ([https://todo-m8gg.onrender.com](https://todo-m8gg.onrender.com))
+- Database: MongoDB Atlas
 
-### Frontend Deployment
-1. Build the frontend application:
-   ```bash
-   cd frontend
-   npm run build
-   ```
-2. Deploy the `build` folder to your preferred hosting service (e.g., Vercel, Netlify, AWS S3)
-3. Update the `API_URL` in `src/config.js` to point to your deployed backend
+### Environment Variables
+1. Backend (Render.com):
+```
+PORT=10000
+MONGODB_URI=your_mongodb_atlas_uri
+JWT_SECRET=your_jwt_secret
+FRONTEND_URL=https://todo-sage-tau.vercel.app
+NODE_ENV=production
+```
+
+2. Frontend (Vercel):
+```
+REACT_APP_API_URL=https://todo-m8gg.onrender.com/api
+```
 
 ## Troubleshooting
 

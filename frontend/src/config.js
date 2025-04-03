@@ -1,6 +1,9 @@
 const config = {
   // API Configuration
-  API_URL: 'http://localhost:5001/api',
+  API_URL: process.env.REACT_APP_API_URL || 
+    (process.env.NODE_ENV === 'production' 
+      ? 'https://todo-m8gg.onrender.com/api'  // Your Render backend URL
+      : 'http://localhost:5001/api'),  // Local backend URL
   
   // Authentication Configuration
   TOKEN_KEY: 'token',
