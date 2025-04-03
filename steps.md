@@ -135,7 +135,7 @@ touch src/config.js
 5. Add environment variables:
    ```
    PORT=10000
-   MONGODB_URI=mongodb+srv://bisusatapathy2000:Ib8DgIkGX1EtUnl2@cluster0.rgsqw9r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+   MONGODB_URI= MongoDB Connection String
    JWT_SECRET=your_jwt_secret
    FRONTEND_URL=https://todo-sage-tau.vercel.app
    NODE_ENV=production
