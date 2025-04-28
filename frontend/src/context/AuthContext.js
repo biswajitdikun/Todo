@@ -28,24 +28,40 @@ export const AuthProvider = ({ children }) => {
       setUser(user);
       return user;
     } catch (error) {
-      throw error.response.data;
+      console.error('Login error:', error);
+      throw error.response?.data || { message: 'Network error, please try again' };
     }
   };
 
   const register = async (username, email, password) => {
     try {
+      console.log('Register attempt:', { username, email, passwordLength: password.length });
+      console.log('API URL:', `${config.API_URL}/auth/register`);
+      
       const response = await axios.post(`${config.API_URL}/auth/register`, {
         username,
         email,
         password,
       });
+      
+      console.log('Register success:', response.data);
       const { token, user } = response.data;
       localStorage.setItem(config.TOKEN_KEY, token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setUser(user);
       return user;
     } catch (error) {
-      throw error.response.data;
+      console.error('Register error details:', {
+        error: error,
+        response: error.response,
+        data: error.response?.data,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        headers: error.response?.headers,
+        message: error.message
+      });
+      
+      throw error.response?.data || { message: 'Network error, please try again' };
     }
   };
 

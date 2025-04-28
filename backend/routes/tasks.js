@@ -12,6 +12,16 @@ const auth = require('../middleware/auth');
 
 /**
  * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
+
+/**
+ * @swagger
  * /api/tasks:
  *   get:
  *     summary: Get all tasks for the authenticated user
@@ -199,6 +209,55 @@ router.delete('/:id', auth, async (req, res) => {
       return res.status(404).json({ message: 'Task not found' });
     }
     res.json({ message: 'Task deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+/**
+ * @swagger
+ * /api/tasks/test-auth:
+ *   get:
+ *     summary: Test endpoint to verify authentication is working
+ *     tags: [Tasks]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Authentication is working properly
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     username:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *       401:
+ *         description: Unauthorized
+ */
+router.get('/test-auth', auth, (req, res) => {
+  try {
+    res.json({
+      message: 'Authentication is working properly',
+      user: {
+        id: req.user._id,
+        username: req.user.username,
+        email: req.user.email
+      },
+      tokenInfo: {
+        exists: !!req.token,
+        length: req.token ? req.token.length : 0
+      }
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

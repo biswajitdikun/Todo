@@ -152,3 +152,61 @@ router.get('/endpoint', (req, res) => {
 ```
 
 Reference the Swagger JSDoc documentation for more options: https://github.com/Surnet/swagger-jsdoc/blob/master/docs/GETTING-STARTED.md 
+
+## Using Swagger UI with Authentication
+
+To use Swagger UI for testing authenticated endpoints (like tasks):
+
+1. First, register or login a user to get a token:
+   - Go to the `/api/auth/register` or `/api/auth/login` endpoint
+   - Fill in the required information and execute the request
+   - Copy the token from the response (it will look like `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`)
+
+2. Click the "Authorize" button at the top of the Swagger UI page:
+   - In the value field, enter: `Bearer your-token-here`
+   - Make sure to include the word "Bearer" followed by a space, then your token
+   - Click "Authorize" and close the dialog
+
+3. Now you can execute task operations:
+   - GET /api/tasks - Fetch all tasks
+   - POST /api/tasks - Create a new task
+   - PUT /api/tasks/{id} - Update a task
+   - DELETE /api/tasks/{id} - Delete a task
+
+4. The Swagger UI will include the token in all generated curl commands.
+
+5. If you use the "Try it out" feature, the token will be automatically added to your requests.
+
+### Example curl Commands with Authentication
+
+Here's an example of how to use the API with curl:
+
+```bash
+# First, login to get a token
+curl -X POST "http://localhost:5001/api/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","password":"yourpassword"}'
+
+# Response will contain a token like:
+# {"user":{...},"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."}
+
+# Use that token in subsequent requests:
+curl -X GET "http://localhost:5001/api/tasks" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+# Create a new task
+curl -X POST "http://localhost:5001/api/tasks" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
+  -d '{"title":"New Task","description":"Task description"}'
+
+# Update a task
+curl -X PUT "http://localhost:5001/api/tasks/task_id_here" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
+  -d '{"title":"Updated Task","description":"Updated description","completed":true}'
+
+# Delete a task
+curl -X DELETE "http://localhost:5001/api/tasks/task_id_here" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+``` 

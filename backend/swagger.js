@@ -12,38 +12,51 @@ const swaggerOptions = {
       contact: {
         name: 'API Support',
       },
-      servers: [
-        {
-          url: 'http://localhost:5001',
-          description: 'Development server',
-        },
-        {
-          url: 'https://todo-m8gg.onrender.com',
-          description: 'Production server',
-        },
-      ],
     },
+    servers: [
+      {
+        url: 'http://localhost:5001',
+        description: 'Development server',
+      },
+      {
+        url: 'https://todo-m8gg.onrender.com',
+        description: 'Production server',
+      },
+    ],
     components: {
       securitySchemes: {
         bearerAuth: {
           type: 'http',
           scheme: 'bearer',
           bearerFormat: 'JWT',
+          description: 'Enter JWT token in the format: "Bearer your-token"'
         },
       },
     },
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
+    // We're removing the global security to make it explicit on each endpoint
   },
   apis: ['./routes/*.js', './models/*.js'],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
+// Setup custom options for swagger UI to show a better auth dialog
+const swaggerUiOptions = {
+  explorer: true,
+  swaggerOptions: {
+    persistAuthorization: true,
+    displayRequestDuration: true,
+    docExpansion: 'list', 
+    filter: true,
+    showExtensions: true,
+    supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
+    tagsSorter: 'alpha',
+    validatorUrl: null,
+  }
+};
+
 module.exports = {
   swaggerUi,
   swaggerDocs,
+  swaggerUiOptions
 }; 
