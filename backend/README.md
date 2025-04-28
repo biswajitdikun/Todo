@@ -109,4 +109,46 @@ The API returns appropriate HTTP status codes and error messages in the followin
 - Passwords are hashed using bcrypt
 - JWT tokens are used for authentication
 - CORS is enabled for frontend integration
-- Environment variables are used for sensitive data 
+- Environment variables are used for sensitive data
+
+## API Documentation with Swagger
+
+This backend is now equipped with Swagger documentation for all API endpoints.
+
+### Accessing Swagger Documentation
+
+- Local Development: http://localhost:5001/api-docs
+- Production: https://todo-m8gg.onrender.com/api-docs
+
+### Using Swagger UI
+
+1. Navigate to the Swagger documentation URL
+2. You'll see a list of all available endpoints grouped by tags:
+   - Authentication: User registration and login
+   - Tasks: Task management endpoints
+3. For testing authenticated endpoints:
+   - Click the "Authorize" button at the top
+   - Enter your JWT token in the format: `Bearer <your-token>`
+   - Click "Authorize" to authenticate your requests
+
+### Extending Swagger Documentation
+
+When adding new endpoints, document them using JSDoc comments. For example:
+
+```javascript
+/**
+ * @swagger
+ * /api/endpoint:
+ *   get:
+ *     summary: Endpoint description
+ *     tags: [Tag]
+ *     responses:
+ *       200:
+ *         description: Success response
+ */
+router.get('/endpoint', (req, res) => {
+  // Implementation
+});
+```
+
+Reference the Swagger JSDoc documentation for more options: https://github.com/Surnet/swagger-jsdoc/blob/master/docs/GETTING-STARTED.md 

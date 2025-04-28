@@ -148,117 +148,28 @@ The application will be available at:
 
 ## API Documentation
 
-### Authentication Endpoints
+The API is documented using Swagger/OpenAPI. You can access the documentation at:
 
-#### Register User
-```
-POST /api/auth/register
-Content-Type: application/json
+- Local Development: http://localhost:5001/api-docs
+- Production: https://todo-m8gg.onrender.com/api-docs
 
-{
-    "username": "testuser",
-    "email": "test@example.com",
-    "password": "Test@123"
-}
+### Using the API Documentation
 
-Response: {
-    "user": {
-        "_id": "...",
-        "username": "testuser",
-        "email": "test@example.com"
-    },
-    "token": "JWT_TOKEN"
-}
-```
+1. Navigate to the Swagger UI using the links above
+2. Explore available endpoints grouped by tags:
+   - Authentication: User registration and login
+   - Tasks: Task management endpoints
+3. For authenticated endpoints:
+   - Click the "Authorize" button
+   - Enter your JWT token in the format: `Bearer <your-token>`
+   - Click "Authorize" to authenticate your requests
 
-#### Login User
-```
-POST /api/auth/login
-Content-Type: application/json
-
-{
-    "email": "test@example.com",
-    "password": "Test@123"
-}
-
-Response: {
-    "user": {
-        "_id": "...",
-        "username": "testuser",
-        "email": "test@example.com"
-    },
-    "token": "JWT_TOKEN"
-}
-```
-
-### Task Endpoints
-
-#### Get All Tasks
-```
-GET /api/tasks
-Authorization: Bearer JWT_TOKEN
-
-Response: [
-    {
-        "_id": "...",
-        "title": "Task Title",
-        "description": "Task Description",
-        "completed": false,
-        "createdAt": "2024-03-06T..."
-    }
-]
-```
-
-#### Create Task
-```
-POST /api/tasks
-Authorization: Bearer JWT_TOKEN
-Content-Type: application/json
-
-{
-    "title": "Task Title",
-    "description": "Task Description"
-}
-
-Response: {
-    "_id": "...",
-    "title": "Task Title",
-    "description": "Task Description",
-    "completed": false,
-    "createdAt": "2024-03-06T..."
-}
-```
-
-#### Update Task
-```
-PUT /api/tasks/:taskId
-Authorization: Bearer JWT_TOKEN
-Content-Type: application/json
-
-{
-    "title": "Updated Title",
-    "description": "Updated Description",
-    "completed": true
-}
-
-Response: {
-    "_id": "...",
-    "title": "Updated Title",
-    "description": "Updated Description",
-    "completed": true,
-    "updatedAt": "2024-03-06T..."
-}
-```
-
-#### Delete Task
-```
-DELETE /api/tasks/:taskId
-Authorization: Bearer JWT_TOKEN
-
-Response: {
-    "message": "Task deleted successfully"
-}
-```
+The documentation provides:
+- Request/response schemas
+- Example payloads
+- Required parameters
+- Possible response codes
+- Interactive testing interface
 
 ## Data Models
 
